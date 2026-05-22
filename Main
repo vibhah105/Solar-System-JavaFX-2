@@ -69,3 +69,44 @@ root.getChildren().add(sunLabel);
             circle = new Circle(400, 250, 100, Color.YELLOW);
         }
     }
+
+private class Asteroid
+    {
+        Circle circle;
+        double dx;
+        double dy;
+
+        Asteroid(double x, double y, double dx, double dy, double radius, Color color) 
+        {
+            this.circle = new Circle(x, y, radius, color);
+            this.dx = dx;
+            this.dy = dy;
+        }
+        
+        void update()
+        {
+            double x = circle.getCenterX() + dx;
+            double y = circle.getCenterY() + dy;
+
+            // Bounce off walls
+            if (x - ASTEROID_RADIUS < 0 || x + ASTEROID_RADIUS > A_WIDTH) {
+                dx *= -1;
+            }
+            if (y - ASTEROID_RADIUS < 0 || y + ASTEROID_RADIUS > A_HEIGHT) {
+                dy *= -1;
+            }
+
+            circle.setCenterX(circle.getCenterX() + dx);
+            circle.setCenterY(circle.getCenterY() + dy);
+        }
+        
+    }
+
+    
+    public static void main(String[] args)
+    {
+        launch(args);
+    }
+    
+    
+}
