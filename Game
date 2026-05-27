@@ -1,0 +1,180 @@
+import javafx.animation.AnimationTimer;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
+import java.util.Random;
+import java.util.ArrayList;
+import javafx.scene.text.Text;
+
+
+public class MyProgram extends Application
+{
+    private static final int A_WIDTH = 800;
+    private static final int A_HEIGHT = 600;
+    private static final int ASTEROID_COUNT = 7;
+    private static final double ASTEROID_RADIUS = 15;
+    
+    ArrayList <Asteroid> asteroids = new ArrayList <> ();
+    AnimationTimer timer;
+    
+    @Override
+    public void start(Stage stage)
+    {
+        Pane root = new Pane();
+        Scene scene = new Scene(root, A_WIDTH, A_HEIGHT, Color.BLACK);
+       
+        //animation
+        Sun sun = new Sun();
+        root.getChildren().add(sun.circle);
+        Text sunLabel = new Text(390, 260, "Sun");
+        Text sunLabel2 = new Text(300, 100, "Click the asteriods to save the sun");
+        
+        sunLabel.setFill(Color.BLACK);
+        sunLabel2.setFill(Color.WHITE);
+
+        root.getChildren().add(sunLabel);
+        root.getChildren().add(sunLabel2);
+        
+        double x = 0;
+        double y = 0;
+        for(int i = 0; i<ASTEROID_COUNT; i++)
+        {
+            Random random = new Random();
+            
+            
+            while (true)
+            {
+                x = random.nextDouble() * (A_WIDTH - 2 * ASTEROID_RADIUS) + ASTEROID_RADIUS;
+                y = random.nextDouble() * (A_HEIGHT - 2 * ASTEROID_RADIUS) + ASTEROID_RADIUS;
+                double xSun = sun.getX();
+                double ySun = sun.getY();
+                double distance = Math.sqrt(xSun*xSun+ySun*ySun);
+                if(distance > 115)
+                {
+                    break;
+                }
+            }
+            double dx = random.nextDouble() * 4 - 2; 
+            double dy = random.nextDouble() * 4 - 2; 
+            Color color = Color.GREY;
+            Asteroid asteroid = new Asteroid(x, y, dx, dy, ASTEROID_RADIUS, color);
+            
+            asteroids.add(asteroid);
+            root.getChildren().add(asteroid.circle);
+           
+            asteroid.circle.setOnMouseClicked(e->
+            {
+                root.getChildren().remove(asteroid.circle);
+                asteroids.remove(asteroid);
+                
+            });
+            
+            
+        }
+        
+        
+        timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                for (Asteroid asteroid : asteroids) {
+                    asteroid.update();
+                    double xDistance = Math.pow(asteroid.getX() - sun.getX(), 2);
+                    double yDistance = Math.pow(asteroid.getY() - sun.getY(), 2);
+                    double distance = Math.sqrt(xDistance+yDistance);
+                    if(distance < 115)
+                    {
+                        timer.stop();
+                        root.getChildren().remove(sun.circle);
+                        Text gameOver = new Text(390, 260, "Game over!");
+                        gameOver.setFill(Color.WHITE);
+                        root.getChildren().add(gameOver);
+                        return;
+                    }
+                }
+            }
+        };
+        timer.start();
+        
+        stage.setScene(scene);
+        stage.show();
+    }
+    
+    private class Sun 
+    {
+        Circle circle;
+        
+        
+        Sun()
+        {
+            circle = new Circle(400, 250, 100, Color.YELLOW);
+        }
+        
+        double getX()
+        {
+            return circle.getCenterX();
+        }
+        double getY()
+        {
+            return circle.getCenterY();
+        }
+    }
+    
+    
+    private class Asteroid
+    {
+        Circle circle;
+        double dx;
+        double dy;
+        double x;
+        double y;
+
+        Asteroid(double x, double y, double dx, double dy, double radius, Color color) 
+        {
+            this.x = x;
+            this.y = y;
+            this.circle = new Circle(x, y, radius, color);
+            this.dx = dx;
+            this.dy = dy;
+        }
+        
+        void update()
+        {
+            double x = circle.getCenterX() + dx;
+            double y = circle.getCenterY() + dy;
+
+            // Bounce off walls
+            if (x - ASTEROID_RADIUS < 0 || x + ASTEROID_RADIUS > A_WIDTH) {
+                dx *= -1;
+            }
+            if (y - ASTEROID_RADIUS < 0 || y + ASTEROID_RADIUS > A_HEIGHT) {
+                dy *= -1;
+            }
+
+            circle.setCenterX(circle.getCenterX() + dx);
+            circle.setCenterY(circle.getCenterY() + dy);
+        }
+        
+        double getX()
+        {
+            return circle.getCenterX();
+        }
+        
+        double getY()
+        {
+            return circle.getCenterY();
+        }
+        
+    }
+    
+
+    
+    public static void main(String[] args)
+    {
+        launch(args);
+    }
+    
+    
+}
