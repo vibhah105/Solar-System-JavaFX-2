@@ -9,7 +9,6 @@ import java.util.Random;
 import java.util.ArrayList;
 import javafx.scene.text.Text;
 
-
 public class MyProgram extends Application
 {
     private static final int A_WIDTH = 800;
@@ -51,14 +50,16 @@ public class MyProgram extends Application
                 y = random.nextDouble() * (A_HEIGHT - 2 * ASTEROID_RADIUS) + ASTEROID_RADIUS;
                 double xSun = sun.getX();
                 double ySun = sun.getY();
-                double distance = Math.sqrt(xSun*xSun+ySun*ySun);
-                if(distance > 115)
+                double xdistance = Math.pow(x-xSun,2);
+                double ydistance = Math.pow(y-ySun,2);
+                double distance = Math.sqrt(xdistance + ydistance);
+                if(distance > sun.circle.getRadius() + ASTEROID_RADIUS+30)
                 {
                     break;
                 }
             }
-            double dx = random.nextDouble() * 4 - 2; 
-            double dy = random.nextDouble() * 4 - 2; 
+            double dx = random.nextDouble() * 3 - 1; 
+            double dy = random.nextDouble() * 3 - 1; 
             Color color = Color.GREY;
             Asteroid asteroid = new Asteroid(x, y, dx, dy, ASTEROID_RADIUS, color);
             
@@ -84,7 +85,7 @@ public class MyProgram extends Application
                     double xDistance = Math.pow(asteroid.getX() - sun.getX(), 2);
                     double yDistance = Math.pow(asteroid.getY() - sun.getY(), 2);
                     double distance = Math.sqrt(xDistance+yDistance);
-                    if(distance < 115)
+                    if(distance < 105)
                     {
                         timer.stop();
                         root.getChildren().remove(sun.circle);
