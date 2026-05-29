@@ -65,6 +65,7 @@ public class MyProgram extends Application
                 y = random.nextDouble() * (A_HEIGHT - 2 * ASTEROID_RADIUS) + ASTEROID_RADIUS;
                 double xSun = sun.getX();
                 double ySun = sun.getY();
+          //distance formula applied to test distance between asteroids and sun
                 double xdistance = Math.pow(x-xSun,2);
                 double ydistance = Math.pow(y-ySun,2);
                 double distance = Math.sqrt(xdistance + ydistance);
@@ -73,14 +74,18 @@ public class MyProgram extends Application
                     break;
                 }
             }
+ //create asteroids if location is not touching sun
             double dx = random.nextDouble() * 3 - 1; 
             double dy = random.nextDouble() * 3 - 1; 
             Color color = Color.GREY;
             Asteroid asteroid = new Asteroid(x, y, dx, dy, ASTEROID_RADIUS, color);
-            
+
+            //Used AI for the root.getChildren() 
+            //Adds asteroid to asteroid ArrayList
             asteroids.add(asteroid);
             root.getChildren().add(asteroid.circle);
-           
+
+  //Used AI to help explain how to get events to work and make on mouse move
             asteroid.circle.setOnMouseClicked(e->
             {
                 root.getChildren().remove(asteroid.circle);
@@ -91,7 +96,7 @@ public class MyProgram extends Application
             
         }
         
-        
+        //Used AI to understand what Animation Timer does
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -100,6 +105,8 @@ public class MyProgram extends Application
                     double xDistance = Math.pow(asteroid.getX() - sun.getX(), 2);
                     double yDistance = Math.pow(asteroid.getY() - sun.getY(), 2);
                     double distance = Math.sqrt(xDistance+yDistance);
+                    //tests if the asteroid hit the sun
+                    //if so, game stops
                     if(distance < 105)
                     {
                         timer.stop();
@@ -112,6 +119,7 @@ public class MyProgram extends Application
                 }
             }
         };
+ //starts Animation timer
         timer.start();
         
         stage.setScene(scene);
