@@ -117,7 +117,13 @@ public class MyProgram extends Application
         stage.setScene(scene);
         stage.show();
     }
-    
+
+    /**
+     * represents the sun in the program
+     * displayed as yellow circle
+     * gets x and y cordinates of itself
+     */
+
     private class Sun 
     {
         Circle circle;
@@ -127,11 +133,22 @@ public class MyProgram extends Application
         {
             circle = new Circle(400, 250, 100, Color.YELLOW);
         }
-        
+
+    /**
+     * Returns the x-coordinate of the sun.
+     * 
+     * @return the center x-coordinate
+     */
         double getX()
         {
             return circle.getCenterX();
         }
+
+    /**
+     * Returns the y-coordinate of the sun.
+     * 
+     * @return the center y-coordinate
+     */
         double getY()
         {
             return circle.getCenterY();
@@ -198,7 +215,9 @@ public class MyProgram extends Application
     }
     
 
-    
+    /**
+     * main method to launch program
+     */
     public static void main(String[] args)
     {
         launch(args);
