@@ -20,6 +20,7 @@ import javafx.scene.text.Text;
 
 public class MyProgram extends Application
 {
+    //Used the example Java Fx program for inspiration
     private static final int A_WIDTH = 800;
     private static final int A_HEIGHT = 600;
     private static final int ASTEROID_COUNT = 7;
@@ -37,10 +38,13 @@ public class MyProgram extends Application
     @Override
     public void start(Stage stage)
     {
+        //creating the scene and pane
+        //used AI to learn and understand that Pane is the UI elements while scene is the actual window itself
         Pane root = new Pane();
         Scene scene = new Scene(root, A_WIDTH, A_HEIGHT, Color.BLACK);
        
         //animation
+        //Creating the sun and animation
         Sun sun = new Sun();
         root.getChildren().add(sun.circle);
         Text sunLabel = new Text(390, 260, "Sun");
@@ -54,6 +58,7 @@ public class MyProgram extends Application
         
         double x = 0;
         double y = 0;
+        //Creating asteroids
         for(int i = 0; i<ASTEROID_COUNT; i++)
         {
             Random random = new Random();
@@ -61,11 +66,12 @@ public class MyProgram extends Application
             
             while (true)
             {
+                //used AI to debug this section
                 x = random.nextDouble() * (A_WIDTH - 2 * ASTEROID_RADIUS) + ASTEROID_RADIUS;
                 y = random.nextDouble() * (A_HEIGHT - 2 * ASTEROID_RADIUS) + ASTEROID_RADIUS;
+                //distance formula applied to test distance between asteroids and sun
                 double xSun = sun.getX();
                 double ySun = sun.getY();
-          //distance formula applied to test distance between asteroids and sun
                 double xdistance = Math.pow(x-xSun,2);
                 double ydistance = Math.pow(y-ySun,2);
                 double distance = Math.sqrt(xdistance + ydistance);
